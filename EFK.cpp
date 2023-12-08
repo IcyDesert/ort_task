@@ -7,8 +7,9 @@ typedef Eigen::Matrix<double, 9, 9> Matrix9d; // 9阶方阵
 using Eigen::Vector4d; // 4维向量
 
 // 零矩阵或零向量，用于置零
-const Vector9d vec_zero = Vector9d::Zero();
-const Matrix9d mtx_zero = Matrix9d::Zero();
+const Vector9d vec9d_zero = Vector9d::Zero();
+const Matrix9d mtx9d_zero = Matrix9d::Zero();
+const Vector4d vec4d_zero = Vector4d::Zero();
 
 class EFK {
     // EFK类型，用于完成卡尔曼滤波
@@ -48,19 +49,19 @@ class EFK {
 
 EFK::EFK(double delta_t)
     // 初始化，所有矩阵先置零
-    : status_previous(vec_zero),
-      status_prior(vec_zero),
-      status_amend(vec_zero),
-      status_msr(vec_zero),
-      Q_previous(mtx_zero),
-      Q_prior(mtx_zero),
-      Q_amend(mtx_zero),
-      Q_noise(mtx_zero),
-      MTX_status_shift_prior(mtx_zero),
+    : status_previous(vec9d_zero),
+      status_prior(vec9d_zero),
+      status_amend(vec9d_zero),
+      status_msr(vec4d_zero),
+      Q_previous(mtx9d_zero),
+      Q_prior(mtx9d_zero),
+      Q_amend(mtx9d_zero),
+      Q_noise(mtx9d_zero),
+      MTX_status_shift_prior(mtx9d_zero),
       MTX_msr(Eigen::Matrix<double, 4, 9>::Zero()),
       K_gain(Eigen::Matrix<double, 9, 4>::Zero()),
       ultra_args_of_K_gain(Eigen::Matrix4d::Zero()),
-      e_msr(Vector4d::Zero()) {
+      e_msr(vec4d_zero) {
     
     // 协方差矩阵，随便写
     Q_previous.diagonal() << 1, 1, 1, 1, 1, 1, 1, 1, 1;
@@ -69,7 +70,7 @@ EFK::EFK(double delta_t)
     for (int i = 0; i <= 6; i += 2) {
         MTX_status_shift_prior(i, i + 1) = delta_t;
     }
-    // 测量矩阵
+    // 测量矩阵，需要填入参数
     MTX_msr.diagonal() << 1, 1, 1, 1;
     update_MTX_msr(status_previous[6]);
     // 噪声矩阵，随便写
@@ -90,7 +91,8 @@ void EFK::measure(void) {
     update_MTX_msr(status_previous[6]);
     status_msr = MTX_msr * status_previous;
     // 判断的对象是z与r，设置的切换标准是10%
-    if (abs(status_msr[2] - status_previous[4]) >= 0.1 * status_previous[4] || abs(status_msr[3] - status_previous[6]) >= 0.1 * status_previous[6]) {
+    if (abs(status_msr[2] - status_previous[4]) >= 0.1 * status_previous[4] ||
+        abs(status_msr[3] - status_previous[6]) >= 0.1 * status_previous[6]) {
         rotate_status_toggle();
     }
     return;
@@ -124,3 +126,7 @@ void EFK::filter_unit(void) {
     amend();
 }
 EFK::~EFK() {}
+
+int main() {
+    return 0;
+}
