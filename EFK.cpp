@@ -44,6 +44,7 @@ class EFK {
    public:
     EFK(double delta_t);
     void filter_unit(void);
+    Vector9d broadcast(void);
     ~EFK();
 };
 
@@ -124,6 +125,10 @@ void EFK::filter_unit(void) {
     measure();
     prior();
     amend();
+}
+Vector9d EFK::broadcast(void) {
+    // 向外广播目标的修正状态
+    return status_amend;
 }
 EFK::~EFK() {}
 
