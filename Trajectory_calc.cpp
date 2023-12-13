@@ -1,10 +1,9 @@
-#include <cmath>
+#include <math.h>
 #include <iostream>
 
 const double coef = -1.0;     // 系数，即-k/m，可以预先计算得知
 const double g = 9.80;        // 重力加速度
-const double h = 0.1;         // 迭代步长
-const double EPSILON = 1e-6;  // 小量，用于判断是否非负
+const double h = 0.02;         // 迭代步长
 
 class Trajectory {
    private:
@@ -92,17 +91,17 @@ void Trajectory::update_and_broadcast(void) {
  * @brief 循环迭代，直到y <= 0即落地
  */
 void Trajectory::mainloop(void) {
-    printf("x     t     y\n");
+    printf("   x       t      y\n");
     do {
         ronge_kutta(this->vx, this->vy, 0);
         ronge_kutta(this->vx, this->vy, 1);
         ++n;
         update_and_broadcast();
-    } while (this->y > EPSILON);
+    } while (this->y > __DBL_EPSILON__);
 }
 Trajectory::~Trajectory(){};
 
 int main(void) {
-    Trajectory trj(10, M_PI / 4);
+    Trajectory trj(18, M_PI / 4);
     trj.mainloop();
 }
