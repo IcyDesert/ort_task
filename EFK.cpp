@@ -40,9 +40,12 @@ class EFK {
     Vector9d broadcast(void);
     ~EFK();
 };
-
+/**
+ * @brief EFK类的初始化
+ * @param delta_t 测量时间间隔
+ */
 EFK::EFK(double delta_t)
-    // 初始化，所有矩阵先置零
+    // 所有矩阵先置零
     : status_previous(vec9d_zero),
       status_prior(vec9d_zero),
       status_amend(vec9d_zero),
@@ -106,24 +109,25 @@ void EFK::prior(void) {
  * @brief 卡尔曼滤波——修正值计算
  */
 void EFK::amend(void) {
-    K_gain = Q_prior * MTX_msr.transpose() * (MTX_msr * Q_prior * MTX_msr.transpose() + ultra_args_of_K_gain).inverse();
+    K_gain = Q_prior * MTX_msr.transpose()
+             * (MTX_msr * Q_prior * MTX_msr.transpose() + ultra_args_of_K_gain).inverse();
     status_amend = status_prior + K_gain * (status_msr - MTX_msr * status_prior);
     Q_amend = (Matrix9d::Identity() - K_gain * MTX_msr) * Q_prior;
     return;
 }
 /**
  * @brief 重置状态，只因旋转引起；这里直接使用测量值作为第一次的状态值
-*/
+ */
 void EFK::rotate_status_toggle(void) {
     status_previous[4] = status_msr[2];  // z坐标
     status_previous[8] = status_msr[3];  // r
     status_previous[6] = 0;              // theta归零，监测一个新装甲板
-    update_MTX_msr(status_previous[6]);  // 当theta变化时，相应地测量矩阵也随之变化 
+    update_MTX_msr(status_previous[6]);  // 当theta变化时，相应地测量矩阵也随之变化
     return;
 }
 /**
  * @brief 滤波的最小操作单元，由测量、先验、修正组成；测量放最前，是确保旋转时能够切换状态，不会引起较大误差
-*/
+ */
 void EFK::filter_unit(void) {
     measure();
     prior();
@@ -131,10 +135,8 @@ void EFK::filter_unit(void) {
 }
 /**
  * @brief 向外广播目标的修正状态
-*/
-Vector9d EFK::broadcast(void) {
-    return status_amend;
-}
+ */
+Vector9d EFK::broadcast(void) { return status_amend; }
 EFK::~EFK() {}
 
 int main() { return 0; }

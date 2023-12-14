@@ -1,21 +1,18 @@
 #include <math.h>
 #include <iostream>
 
-const double coef = -1.0;     // 系数，即-k/m，可以预先计算得知
-const double g = 9.80;        // 重力加速度
-const double h = 0.02;         // 迭代步长
+const double coef = -1.0;  // 系数，即-k/m（已带上负号），可以预先计算得知
+const double g = 9.80;     // 重力加速度
+const double h = 0.02;     // 迭代步长
 
 class Trajectory {
    private:
-    // x、y坐标
-    double x = 0.0;
-    double y = 0.0;
-    // x、y方向速度分量
-    double vx;
-    double vy;
-    // x、y方向加速度分量
-    double ax;
-    double ay;
+    double x = 0.0;       // 子弹x坐标
+    double y = 0.0;       // 子弹y坐标
+    double vx;            // x方向速度分量
+    double vy;            // y方向速度分量
+    double ax;            // x方向加速度分量
+    double ay;            // y方向加速度分量
     long long int n = 0;  // 微分方程迭代步数
     void ronge_kutta(double vx, double vy, int mode);
     double ax_out_of_v(double z, double w);
@@ -40,13 +37,17 @@ Trajectory::Trajectory(double v, double theta) : vx(v * cos(theta)), vy(v * sin(
  * @param w y轴速度
  * @return
  */
-inline double Trajectory::ax_out_of_v(double z, double w) { return coef * sqrt(z * z + w * w) * z; }
+inline double Trajectory::ax_out_of_v(double z, double w) { 
+    return coef * sqrt(z * z + w * w) * z; 
+}
 /**
  * @brief 利用速度分量，通过微分方程计算y方向加速度（为了与推导过程保持一致，这里没有改符号）
  * @param z x方向速度
  * @param w y方向速度
  */
-inline double Trajectory::ay_out_of_v(double z, double w) { return coef * sqrt(z * z + w * w) * w - g; }
+inline double Trajectory::ay_out_of_v(double z, double w) { 
+    return coef * sqrt(z * z + w * w) * w - g; 
+}
 /**
  * @brief 利用四阶龙格库塔法、微分方程更新速度
  * （其实可以用函数指针数组或传函数参数，但是才两个，没必要）
@@ -91,7 +92,7 @@ void Trajectory::update_and_broadcast(void) {
  * @brief 循环迭代，直到y <= 0即落地
  */
 void Trajectory::mainloop(void) {
-    printf("   x       t      y\n");
+    printf("   x       t      y\n"); // 表头
     do {
         ronge_kutta(this->vx, this->vy, 0);
         ronge_kutta(this->vx, this->vy, 1);
