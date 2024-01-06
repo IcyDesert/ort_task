@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from task_interfaces/msg/InputMsg.msg
+// generated code does not contain a copyright notice
+
+
+module task_interfaces {
+  module msg {
+    struct InputMsg {
+      double x;
+
+      double y;
+
+      double z;
+
+      double yaw;
+
+      @verbatim (language="comment", text=
+        "时间戳")
+      double timestamp;
+    };
+  };
+};

@@ -1,0 +1,8 @@
+[31mCMake Error at CMakeLists.txt:38 (add_executable):
+  add_executable cannot create target "enemy_estimator_task" because another
+  target with the same name already exists.  The existing target is a shared
+  library created in source directory
+  "/home/snow/Desktop/enemy_estimator_ws/src/enemy_estimator_task".  See
+  documentation for policy CMP0002 for more details.
+
+[0m

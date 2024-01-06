@@ -1,0 +1,7 @@
+{
+  "package_name": "task_interfaces",
+  "non_idl_tuples": [
+    "/home/snow/Desktop/enemy_estimator_ws/src/task_interfaces:msg/InputMsg.msg",
+    "/home/snow/Desktop/enemy_estimator_ws/src/task_interfaces:msg/OutputMsg.msg"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/ubuntu/rmcv_ws/install/rm_serial_driver/include/**",
+        "/home/ubuntu/rmcv_ws/install/rm_lagacy_replay/include/**",
+        "/home/ubuntu/rmcv_ws/install/rm_detector/include/**",
+        "/home/ubuntu/rmcv_ws/install/rm_can_driver/include/**",
+        "/home/ubuntu/rmcv_ws/install/hik_camera/include/**",
+        "/home/ubuntu/rmcv_ws/install/enemy_predictor/include/**",
+        "/home/ubuntu/rmcv_ws/install/rm_utils/include/**",
+        "/home/ubuntu/rmcv_ws/install/rm_republish/include/**",
+        "/home/ubuntu/rmcv_ws/install/rm_interfaces/include/**",
+        "/home/ubuntu/ws_livox/install/livox_ros_driver2/include/**",
+        "/home/ubuntu/AutoAim2024/install/rm_serial_driver/include/**",
+        "/home/ubuntu/AutoAim2024/install/rm_lagacy_replay/include/**",
+        "/home/ubuntu/AutoAim2024/install/rm_detector/include/**",
+        "/home/ubuntu/AutoAim2024/install/rm_can_driver/include/**",
+        "/home/ubuntu/AutoAim2024/install/hik_camera/include/**",
+        "/home/ubuntu/AutoAim2024/install/enemy_predictor/include/**",
+        "/home/ubuntu/AutoAim2024/install/enemy_estimator/include/**",
+        "/home/ubuntu/AutoAim2024/install/rm_utils/include/**",
+        "/home/ubuntu/AutoAim2024/install/rm_republish/include/**",
+        "/home/ubuntu/AutoAim2024/install/rm_interfaces/include/**",
+        "/home/ubuntu/SLAM_ROS2_ws/install/loop_closure/include/**",
+        "/home/ubuntu/SLAM_ROS2_ws/install/fast_lio/include/**",
+        "/home/ubuntu/etcv_ws/install/et_detector/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/ubuntu/enemy_estimator_ws/src/enemy_estimator_task/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

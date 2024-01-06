@@ -1,0 +1,4 @@
+source;share/enemy_estimator_task/local_setup.bash
+source;share/enemy_estimator_task/local_setup.dsv
+source;share/enemy_estimator_task/local_setup.sh
+source;share/enemy_estimator_task/local_setup.zsh

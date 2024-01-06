@@ -1,0 +1,32 @@
+[0.027s] Invoking command in '/home/snow/Desktop/enemy_estimator_ws/build/enemy_estimator_task': AMENT_PREFIX_PATH=/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces:/opt/ros/humble LD_LIBRARY_PATH=/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/snow/Desktop/enemy_estimator_ws/src/enemy_estimator_task -DCMAKE_INSTALL_PREFIX=/home/snow/Desktop/enemy_estimator_ws/install/enemy_estimator_task
+[0.034s] -- Found ament_cmake_auto: 1.3.6 (/opt/ros/humble/share/ament_cmake_auto/cmake)
+[0.138s] -- Found task_interfaces: 0.0.0 (/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces/share/task_interfaces/cmake)
+[0.154s] -- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.155s] -- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.159s] -- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.166s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.176s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.320s] -- Found rmw_implementation_cmake: 6.1.1 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.321s] -- Found rmw_fastrtps_cpp: 6.2.5 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.393s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.491s] -- Found ament_lint_auto: 0.12.9 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.494s] [31mCMake Error at CMakeLists.txt:38 (add_executable):
+[0.494s]   add_executable cannot create target "enemy_estimator_task" because another
+[0.494s]   target with the same name already exists.  The existing target is a shared
+[0.494s]   library created in source directory
+[0.494s]   "/home/snow/Desktop/enemy_estimator_ws/src/enemy_estimator_task".  See
+[0.494s]   documentation for policy CMP0002 for more details.
+[0.494s] 
+[0.495s] [0m
+[0.525s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.525s] -- Configured cppcheck include dirs: /home/snow/Desktop/enemy_estimator_ws/src/enemy_estimator_task/include
+[0.525s] -- Configured cppcheck exclude dirs and/or files: 
+[0.529s] -- Added test 'flake8' to check Python code syntax and style conventions
+[0.536s] -- Added test 'lint_cmake' to check CMake code style
+[0.540s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[0.567s] -- Added test 'uncrustify' to check C / C++ code style
+[0.568s] -- Configured uncrustify additional arguments: 
+[0.571s] -- Added test 'xmllint' to check XML markup files
+[0.572s] -- Configuring incomplete, errors occurred!
+[0.572s] See also "/home/snow/Desktop/enemy_estimator_ws/build/enemy_estimator_task/CMakeFiles/CMakeOutput.log".
+[0.578s] Invoked command in '/home/snow/Desktop/enemy_estimator_ws/build/enemy_estimator_task' returned '1': AMENT_PREFIX_PATH=/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces:/opt/ros/humble LD_LIBRARY_PATH=/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/snow/Desktop/enemy_estimator_ws/src/enemy_estimator_task -DCMAKE_INSTALL_PREFIX=/home/snow/Desktop/enemy_estimator_ws/install/enemy_estimator_task

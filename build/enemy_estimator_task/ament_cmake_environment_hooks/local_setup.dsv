@@ -1,0 +1,3 @@
+source;share/enemy_estimator_task/environment/ament_prefix_path.sh
+source;share/enemy_estimator_task/environment/library_path.sh
+source;share/enemy_estimator_task/environment/path.sh

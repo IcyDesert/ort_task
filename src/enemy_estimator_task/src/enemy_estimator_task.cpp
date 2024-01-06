@@ -34,15 +34,15 @@ class EFK : public rclcpp::Node {
     Eigen::Matrix4d ultra_args_of_K_gain;  // 卡尔曼增益矩阵中的R，超参数
     Matrix9d Q_noise;                      // 协方差噪声
     Vector4d e_msr;                        // 测量误差
-    double r_offset;
-    double z_offset;
+    double r_offset;                       // 半径偏置量
+    double z_offset;                       // 高度偏置量
     // 订阅者指针
     rclcpp::Subscription<task_interfaces::msg::InputMsg>::SharedPtr filter_subscriber_;
     // 发布者指针
     rclcpp::Publisher<task_interfaces::msg::OutputMsg>::SharedPtr filter_publisher_;
     // 计时器
     rclcpp::TimerBase::SharedPtr timer_;
-    void subscribe_callback(const auto msg);
+    void subscriber_callback(const auto msg);
     void timer_callback(void);
     void update_MTX_msr(double theta);
     void measure(void);
@@ -78,16 +78,16 @@ EFK::EFK(double delta_t)
       Node("") {
     //---------------以下为节点通信相关处理--------------
     // 在filter话题下
-    filter_subscriber_ = this->create_subscription<std_msgs::msg::String>(
-        "filter", 10, std::bind(&EFK::subscribe_callback, this, std::placeholders::_1)
+    filter_subscriber_ = this->create_subscription<task_interfaces::msg::InputMsg>(
+        "filter", 10, std::bind(&EFK::subscriber_callback, this, std::placeholders::_1)
         ); // 订阅者
-    filter_publisher_ = this->create_publisher<task_interfaces::msg::InputMsg>("filter", 10); // 发布者
+    filter_publisher_ = this->create_publisher<task_interfaces::msg::OutputMsg>("filter", 10); // 发布者
     timer_ = this->create_wall_timer(std::chrono::milliseconds(100), 
                                      std::bind(&EFK::timer_callback, this)); // 计时器
     //--------------以下为矩阵初始化-------------
     // 从参数文件里读取参数，对超参数初始化
-    init_for_ultra_args(Q_noise, "Q_noise.prm");
-    init_for_ultra_args(ultra_args_of_K_gain, "R.prm")
+    init_for_ultra_args(Q_noise, "Q_noise.parm");
+    init_for_ultra_args(ultra_args_of_K_gain, "R.parm")
     // 状态变换矩阵
     MTX_status_shift_prior.diagonal() << 1, 1, 1, 1, 1, 1, 1, 1, 1;
     for (int i = 0; i <= 6; i += 2) {
@@ -96,11 +96,9 @@ EFK::EFK(double delta_t)
     // 测量矩阵
     MTX_msr.diagonal() << 1, 1, 1, 1;
     update_MTX_msr(status_previous[6]);
-    // 噪声、测量误差矩阵，随便写
-    Q_noise.diagonal() << 1, 1, 1, 1, 1, 1, 1, 1, 1;
+    // 白噪声方差、测量误差矩阵，随便写
+    Q_previous.diagonal() << 1, 1, 1, 1, 1, 1, 1, 1, 1;
     e_msr = Vector4d::Constant(0.05);
-    // 超参数，随便写
-    ultra_args_of_K_gain.diagonal() << 1, 1, 1, 1;
 
     RCLCPP_INFO(this->get_logger(), "观测、滤波程序就位，准备接受观测数据.");
 }
@@ -128,7 +126,7 @@ void EFK::timer_callback() {
  * @brief 订阅者收到信息的回调函数，执行卡尔曼滤波过程
  * @param msg 实际上是InputMsg类型指针，包含测量数据
 */
-void EFK::subscribe_callback(const auto msg) {
+void EFK::subscriber_callback(const auto msg) {
     status_msr << msg->x, msg->y, msg->z, msg->yaw;
     this->filter_unit();
     RCLCPP_INFO(this->get_logger(), "收到观测数据，已完成滤波计算.")
