@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cmath>
 #include "rclcpp/rclcpp.hpp"
 #include "Eigen/Dense"
 #include "task_interfaces/msg/input_msg.hpp"
@@ -38,16 +37,15 @@ class EFK : public rclcpp::Node {
     // 计时器
     rclcpp::TimerBase::SharedPtr timer_;
     void subscriber_callback(const auto msg);
-    void timer_callback(void);
+    void timer_callback();
     void update_MTX_msr(double theta);
-    void measure(void);
-    void prior(void);
-    void amend(void);
-    void rotate_status_toggle(void);
-    double get_timestamp(void);
-    void EFK::init_for_ultra_args(Matrix9d matrix_, string filename);
+    void measure();
+    void prior();
+    void amend();
+    void rotate_status_toggle();
+    double get_timestamp();
    public:
     EFK(double delta_t);
-    void filter_unit(void);
+    void filter_unit();
     ~EFK();
 };

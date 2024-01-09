@@ -1,12 +1,11 @@
 #include "../include/enemy_estimator_task/enemy_estimator_task.hpp"
 #include <cmath>
-#include <fstream>
 #include "rclcpp/rclcpp.hpp"
 #include "Eigen/Dense"
 #include "task_interfaces/msg/input_msg.hpp"
 #include "task_interfaces/msg/output_msg.hpp"
-
-// TODO 头文件里应该写什么？C++ Primer Plus
+#include "Q_noise_param.cpp"
+#include "R_param.cpp"
 
 // 零矩阵或零向量，用于置零
 const Vector9d vec9d_zero = Vector9d::Zero();
@@ -39,17 +38,16 @@ class EFK : public rclcpp::Node {
     // 计时器
     rclcpp::TimerBase::SharedPtr timer_;
     void subscriber_callback(const auto msg);
-    void timer_callback(void);
+    void timer_callback();
     void update_MTX_msr(double theta);
-    void measure(void);
-    void prior(void);
-    void amend(void);
-    void rotate_status_toggle(void);
-    double get_timestamp(void);
-    void EFK::init_for_ultra_args(Matrix9d matrix_, string filename);
+    void measure();
+    void prior();
+    void amend();
+    void rotate_status_toggle();
+    double get_timestamp();
    public:
     EFK(double delta_t);
-    void filter_unit(void);
+    void filter_unit();
     ~EFK();
 };
 /**
@@ -57,7 +55,7 @@ class EFK : public rclcpp::Node {
  * @param delta_t 测量时间间隔
  */
 EFK::EFK(double delta_t)
-    // 所有矩阵先置零
+    // 噪声矩阵和R超参数从“参数cpp文件”里读取，其他矩阵置零
     : status_previous(vec9d_zero),
       status_prior(vec9d_zero),
       status_amend(vec9d_zero),
@@ -68,12 +66,12 @@ EFK::EFK(double delta_t)
       Q_noise(mtx9d_zero),
       MTX_status_shift_prior(mtx9d_zero),
       MTX_msr(Eigen::Matrix<double, 4, 9>::Zero()),
-      K_gain(Eigen::Matrix<double, 9, 4>::Zero()),
-      ultra_args_of_K_gain(Eigen::Matrix4d::Zero()),
+      K_gain(Q_noise_NS::Q_noise),
+      ultra_args_of_K_gain(R_NS::R_),
       e_msr(vec4d_zero),
-      Node("") {
+      Node("EFK filter node") {
     //---------------以下为节点通信相关处理--------------
-    // 在filter话题下
+    // 所在的话题名称为filter
     filter_subscriber_ = this->create_subscription<task_interfaces::msg::InputMsg>(
         "filter", 10, std::bind(&EFK::subscriber_callback, this, std::placeholders::_1)
         ); // 订阅者
@@ -81,9 +79,6 @@ EFK::EFK(double delta_t)
     timer_ = this->create_wall_timer(std::chrono::milliseconds(100), 
                                      std::bind(&EFK::timer_callback, this)); // 计时器
     //--------------以下为矩阵初始化-------------
-    // 从参数文件里读取参数，对超参数初始化
-    init_for_ultra_args(Q_noise, "Q_noise.parm");
-    init_for_ultra_args(ultra_args_of_K_gain, "R.parm")
     // 状态变换矩阵
     MTX_status_shift_prior.diagonal() << 1, 1, 1, 1, 1, 1, 1, 1, 1;
     for (int i = 0; i <= 6; i += 2) {
@@ -140,7 +135,7 @@ inline void EFK::update_MTX_msr(double theta) {
 /**
  * @brief 测量，并以z和r的5%为允许误差范围，判断是否发生旋转突变；如果是旋转引起突变还需要切换状态，重新开始测量
  */
-void EFK::measure(void) {
+void EFK::measure() {
     update_MTX_msr(status_previous[6]);
     status_msr = MTX_msr * status_previous;
     // 判断的对象是z与r，设置的切换标准是5%
@@ -153,7 +148,7 @@ void EFK::measure(void) {
 /**
  * @brief 卡尔曼滤波——先验值计算
  */
-void EFK::prior(void) {
+void EFK::prior() {
     status_prior = MTX_status_shift_prior * status_previous;
     Q_prior = MTX_status_shift_prior * Q_previous * MTX_status_shift_prior.transpose() + Q_noise;
     return;
@@ -161,7 +156,7 @@ void EFK::prior(void) {
 /**
  * @brief 卡尔曼滤波——修正值计算
  */
-void EFK::amend(void) {
+void EFK::amend() {
     K_gain = Q_prior * MTX_msr.transpose()
              * (MTX_msr * Q_prior * MTX_msr.transpose() + ultra_args_of_K_gain).inverse();
     status_amend = status_prior + K_gain * (status_msr - MTX_msr * status_prior);
@@ -171,7 +166,7 @@ void EFK::amend(void) {
 /**
  * @brief 重置状态，只因旋转引起；这里直接使用测量值作为新一次的状态值
  */
-void EFK::rotate_status_toggle(void) {
+void EFK::rotate_status_toggle() {
     r_offset = status_msr[2] - status_previous[4]; // 半径偏置量
     z_offset = status_msr[3] - status_previous[6]; // 高度偏置量
     status_previous[4] = status_msr[2];  // z坐标
@@ -183,7 +178,7 @@ void EFK::rotate_status_toggle(void) {
 /**
  * @brief 滤波的最小操作单元，由测量、先验、修正组成；测量放最前，是确保旋转时能够切换状态，不会引起较大误差
  */
-void EFK::filter_unit(void) {
+void EFK::filter_unit() {
     measure();
     prior();
     amend();
@@ -196,23 +191,6 @@ double EFK::get_timestamp() {
     return std::chrono::duration_cast<std::chrono::duration<double>>(
         std::chrono::steady_clock::now().time_since_epoch()
     ).count();
-}
-/**
- * @brief 从参数文件中读取参数，并初始化噪声协方差和R两个矩阵
- * @param matrix_ 9维方阵
- * @param filename 参数文件名
-*/
-void EFK::init_for_ultra_args(Matrix9d matrix_, string filename) {
-    ifstream fin;
-    string Q_param;
-    fin.open(filename, ios::in);
-    for (int i = 0; i < 9;++i) {
-        for (int j = 0; j < 9;++j) {
-            fin >> Q_param;
-            matrix_(i, j) = std::stod(Q_param);
-        }
-    }
-    return;
 }
 EFK::~EFK() {}
 
