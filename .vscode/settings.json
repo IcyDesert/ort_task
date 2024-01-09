@@ -35,7 +35,8 @@
         "cmath": "cpp",
         "chrono": "cpp",
         "iosfwd": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "dense": "cpp"
     },
     "cmake.configureOnOpen": false
 }

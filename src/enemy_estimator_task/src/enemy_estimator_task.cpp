@@ -1,4 +1,4 @@
-#include <enemy_estimator_task/enemy_estimator_task.hpp>
+#include "../include/enemy_estimator_task/enemy_estimator_task.hpp"
 #include <cmath>
 #include <fstream>
 #include "rclcpp/rclcpp.hpp"
@@ -6,11 +6,7 @@
 #include "task_interfaces/msg/input_msg.hpp"
 #include "task_interfaces/msg/output_msg.hpp"
 
-
-typedef Eigen::Matrix<double, 9, 1> Vector9d;  // 9维向量
-typedef Eigen::Matrix<double, 9, 9> Matrix9d;  // 9阶方阵
-using Eigen::Vector4d;                         // 4维向量
-using std::string;                             // c++字符串
+// TODO 头文件里应该写什么？C++ Primer Plus
 
 // 零矩阵或零向量，用于置零
 const Vector9d vec9d_zero = Vector9d::Zero();
