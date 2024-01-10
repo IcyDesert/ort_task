@@ -4,7 +4,7 @@
 #include "Eigen/Dense"
 #include "../../../install/task_interfaces/include/task_interfaces/task_interfaces/msg/input_msg.hpp"
 #include "../../../install/task_interfaces/include/task_interfaces/task_interfaces/msg/output_msg.hpp"
-#include "ultra_parameter.hpp"
+#include "ultra_parameters.hpp"
 
 // 零矩阵或零向量，用于置零
 const Vector9d vec9d_zero = Vector9d::Zero();
@@ -16,7 +16,7 @@ const Vector4d vec4d_zero = Vector4d::Zero();
  * @param delta_t 测量时间间隔
  */
 EFK::EFK(double delta_t)
-    // 噪声矩阵和R超参数从“参数cpp文件”里读取，其他矩阵置零
+    // 噪声与R超参数从“参数hpp文件”里读取，其他矩阵置零
     : status_previous(vec9d_zero),
       status_prior(vec9d_zero),
       status_amend(vec9d_zero),
@@ -24,12 +24,12 @@ EFK::EFK(double delta_t)
       Q_previous(mtx9d_zero),
       Q_prior(mtx9d_zero),
       Q_amend(mtx9d_zero),
-      Q_noise(Q_noise_NS::Q_noise),
       MTX_status_shift_prior(mtx9d_zero),
       MTX_msr(Eigen::Matrix<double, 4, 9>::Zero()),
       K_gain(Eigen::Matrix<double, 9, 4>::Zero()),
-      ultra_args_of_K_gain(R_NS::R_),
-      e_msr(vec4d_zero),
+      Q_noise(ultra_param::Q_noise),
+      ultra_args_of_K_gain(ultra_param::R_),
+      e_msr(ultra_param::e_msr),
       Node("EFK filter node") {
     //---------------以下为节点通信相关处理--------------
     // 所在的话题名称为filter
@@ -50,7 +50,6 @@ EFK::EFK(double delta_t)
     update_MTX_msr(status_previous[6]);
     // 白噪声方差、测量误差矩阵，随便写
     Q_previous.diagonal() << 1, 1, 1, 1, 1, 1, 1, 1, 1;
-    e_msr = Vector4d::Constant(0.05);
 
     RCLCPP_INFO(this->get_logger(), "观测、滤波程序就位，准备接受观测数据.");
 }
@@ -78,7 +77,7 @@ void EFK::timer_callback() {
  * @brief 订阅者收到信息的回调函数，执行卡尔曼滤波过程
  * @param msg 实际上是InputMsg类型指针，包含测量数据
 */
-void EFK::subscriber_callback(const task_interfaces::msg::InputMsg::SharedPtr msg) {
+void EFK::subscriber_callback(const task_interfaces::msg::InputMsg::SharedPtr &msg) {
     status_msr << msg->x, msg->y, msg->z, msg->yaw;
     this->filter_unit();
     RCLCPP_INFO(this->get_logger(), "收到观测数据，已完成滤波计算.");
@@ -88,7 +87,7 @@ void EFK::subscriber_callback(const task_interfaces::msg::InputMsg::SharedPtr ms
  * @brief 测量矩阵更新，只因测量矩阵里带有theta，会随状态而变化
  * @param theta 上一状态时的最优角度
  */
-inline void EFK::update_MTX_msr(double theta) {
+inline void EFK::update_MTX_msr(const double &theta) {
     MTX_msr(0, 8) = cos(theta);
     MTX_msr(1, 8) = sin(theta);
     return;

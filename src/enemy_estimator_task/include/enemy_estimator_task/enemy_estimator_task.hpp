@@ -36,9 +36,9 @@ class EFK : public rclcpp::Node {
     rclcpp::Publisher<task_interfaces::msg::OutputMsg>::SharedPtr filter_publisher_;
     // 计时器
     rclcpp::TimerBase::SharedPtr timer_;
-    void subscriber_callback(const task_interfaces::msg::InputMsg::SharedPtr msg);
+    void subscriber_callback(const task_interfaces::msg::InputMsg::SharedPtr &msg);
     void timer_callback();
-    void update_MTX_msr(double theta);
+    void update_MTX_msr(double &theta);
     void measure();
     void prior();
     void amend();

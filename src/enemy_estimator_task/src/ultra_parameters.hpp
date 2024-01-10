@@ -1,11 +1,8 @@
-
-
-
-
 #include "Eigen/Dense"
 
-namespace Q_noise_NS {
-    Eigen::Matrix<double, 9, 9> Q_noise {
+namespace ultra_param {
+    // 协方差噪声
+    const Eigen::Matrix<double, 9, 9> Q_noise {
         {1, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 1, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 1, 0, 0, 0, 0, 0, 0},
@@ -16,13 +13,15 @@ namespace Q_noise_NS {
         {0, 0, 0, 0, 0, 0, 0, 1, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 1}
     };
-}
-
-namespace R_NS{
-    Eigen::Matrix4d R_ {
+    // 卡尔曼滤波的超参数
+    const Eigen::Matrix4d R_ {
         {1, 0, 0, 0},
         {0, 1, 0, 0},
         {0, 0, 1, 0},
         {0, 0, 0, 1}
+    };
+    // 测量误差
+    const Eigen::Vector4d e_msr {
+        1, 2, 3, 4
     };
 }
