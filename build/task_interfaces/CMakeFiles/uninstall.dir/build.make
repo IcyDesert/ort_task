@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/snow/Desktop/enemy_estimator_ws/src/task_interfaces
+CMAKE_SOURCE_DIR = /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/src/task_interfaces
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces
+CMAKE_BINARY_DIR = /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces
 
 # Utility rule file for uninstall.
 
@@ -78,6 +78,6 @@ CMakeFiles/uninstall.dir/clean:
 .PHONY : CMakeFiles/uninstall.dir/clean
 
 CMakeFiles/uninstall.dir/depend:
-	cd /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/snow/Desktop/enemy_estimator_ws/src/task_interfaces /home/snow/Desktop/enemy_estimator_ws/src/task_interfaces /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/src/task_interfaces /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/src/task_interfaces /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/uninstall.dir/depend
 

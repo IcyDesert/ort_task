@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/snow/Desktop/enemy_estimator_ws/src/task_interfaces
+CMAKE_SOURCE_DIR = /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/src/task_interfaces
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces
+CMAKE_BINARY_DIR = /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,9 +142,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces/CMakeFiles /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces/CMakeFiles /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

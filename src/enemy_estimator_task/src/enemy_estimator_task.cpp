@@ -2,54 +2,15 @@
 #include <cmath>
 #include "rclcpp/rclcpp.hpp"
 #include "Eigen/Dense"
-#include "task_interfaces/msg/input_msg.hpp"
-#include "task_interfaces/msg/output_msg.hpp"
-#include "Q_noise_param.cpp"
-#include "R_param.cpp"
+#include "../../../install/task_interfaces/include/task_interfaces/task_interfaces/msg/input_msg.hpp"
+#include "../../../install/task_interfaces/include/task_interfaces/task_interfaces/msg/output_msg.hpp"
+#include "ultra_parameter.hpp"
 
 // 零矩阵或零向量，用于置零
 const Vector9d vec9d_zero = Vector9d::Zero();
 const Matrix9d mtx9d_zero = Matrix9d::Zero();
 const Vector4d vec4d_zero = Vector4d::Zero();
 
-class EFK : public rclcpp::Node {
-    // EFK类型，用于完成卡尔曼滤波且进行消息发布
-    // 使用时，先测量以确定是否需要进行旋转导致的状态切换，然后依次进行先验、校正，见filter_unit
-   private:
-    Vector9d status_previous;              // 前一最优状态
-    Matrix9d Q_previous;                   // 前一最优协方差
-    Vector9d status_prior;                 // 状态先验值
-    Matrix9d Q_prior;                      // 协方差先验值
-    Matrix9d MTX_status_shift_prior;       // 状态方程中的变换矩阵，由前一最优状态得到先验值
-    Vector4d status_msr;                   // 测量得到的状态量
-    Eigen::Matrix<double, 4, 9> MTX_msr;   // 测量矩阵
-    Vector9d status_amend;                 // 状态修正值
-    Matrix9d Q_amend;                      // 协方差修正值
-    Eigen::Matrix<double, 9, 4> K_gain;    // 卡尔曼增益矩阵
-    Eigen::Matrix4d ultra_args_of_K_gain;  // 卡尔曼增益矩阵中的R，超参数
-    Matrix9d Q_noise;                      // 协方差噪声
-    Vector4d e_msr;                        // 测量误差
-    double r_offset;                       // 半径偏置量
-    double z_offset;                       // 高度偏置量
-    // 订阅者指针
-    rclcpp::Subscription<task_interfaces::msg::InputMsg>::SharedPtr filter_subscriber_;
-    // 发布者指针
-    rclcpp::Publisher<task_interfaces::msg::OutputMsg>::SharedPtr filter_publisher_;
-    // 计时器
-    rclcpp::TimerBase::SharedPtr timer_;
-    void subscriber_callback(const auto msg);
-    void timer_callback();
-    void update_MTX_msr(double theta);
-    void measure();
-    void prior();
-    void amend();
-    void rotate_status_toggle();
-    double get_timestamp();
-   public:
-    EFK(double delta_t);
-    void filter_unit();
-    ~EFK();
-};
 /**
  * @brief EFK类的初始化
  * @param delta_t 测量时间间隔
@@ -63,18 +24,18 @@ EFK::EFK(double delta_t)
       Q_previous(mtx9d_zero),
       Q_prior(mtx9d_zero),
       Q_amend(mtx9d_zero),
-      Q_noise(mtx9d_zero),
+      Q_noise(Q_noise_NS::Q_noise),
       MTX_status_shift_prior(mtx9d_zero),
       MTX_msr(Eigen::Matrix<double, 4, 9>::Zero()),
-      K_gain(Q_noise_NS::Q_noise),
+      K_gain(Eigen::Matrix<double, 9, 4>::Zero()),
       ultra_args_of_K_gain(R_NS::R_),
       e_msr(vec4d_zero),
       Node("EFK filter node") {
     //---------------以下为节点通信相关处理--------------
     // 所在的话题名称为filter
     filter_subscriber_ = this->create_subscription<task_interfaces::msg::InputMsg>(
-        "filter", 10, std::bind(&EFK::subscriber_callback, this, std::placeholders::_1)
-        ); // 订阅者
+            "filter", 10, std::bind(&EFK::subscriber_callback, this, std::placeholders::_1
+        )); // 订阅者
     filter_publisher_ = this->create_publisher<task_interfaces::msg::OutputMsg>("filter", 10); // 发布者
     timer_ = this->create_wall_timer(std::chrono::milliseconds(100), 
                                      std::bind(&EFK::timer_callback, this)); // 计时器
@@ -110,17 +71,17 @@ void EFK::timer_callback() {
     message.z_offset = this->z_offset;
     message.timestamp = this->get_timestamp();
     filter_publisher_->publish(message);
-    RCLCPP_INFO(this->get_logger(), "已发布修正状态.")
+    RCLCPP_INFO(this->get_logger(), "已发布修正状态.");
     return;
 }
 /**
  * @brief 订阅者收到信息的回调函数，执行卡尔曼滤波过程
  * @param msg 实际上是InputMsg类型指针，包含测量数据
 */
-void EFK::subscriber_callback(const auto msg) {
+void EFK::subscriber_callback(const task_interfaces::msg::InputMsg::SharedPtr msg) {
     status_msr << msg->x, msg->y, msg->z, msg->yaw;
     this->filter_unit();
-    RCLCPP_INFO(this->get_logger(), "收到观测数据，已完成滤波计算.")
+    RCLCPP_INFO(this->get_logger(), "收到观测数据，已完成滤波计算.");
     return;
 }
 /**

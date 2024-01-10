@@ -10,6 +10,7 @@ find_package(Eigen3 3.3 REQUIRED)
 set(link Eigen3::Eigen ${link})
 
 find_package(ament_cmake_auto REQUIRED)
+find_package(rclcpp REQUIRED) # 手动加入
 find_package(task_interfaces REQUIRED)
 
 # find ament_cmake

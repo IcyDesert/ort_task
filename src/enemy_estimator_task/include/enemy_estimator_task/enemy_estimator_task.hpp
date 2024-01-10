@@ -2,8 +2,8 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "Eigen/Dense"
-#include "task_interfaces/msg/input_msg.hpp"
-#include "task_interfaces/msg/output_msg.hpp"
+#include "../../../../install/task_interfaces/include/task_interfaces/task_interfaces/msg/input_msg.hpp"
+#include "../../../../install/task_interfaces/include/task_interfaces/task_interfaces/msg/output_msg.hpp"
 
 
 typedef Eigen::Matrix<double, 9, 1> Vector9d;  // 9维向量
@@ -36,7 +36,7 @@ class EFK : public rclcpp::Node {
     rclcpp::Publisher<task_interfaces::msg::OutputMsg>::SharedPtr filter_publisher_;
     // 计时器
     rclcpp::TimerBase::SharedPtr timer_;
-    void subscriber_callback(const auto msg);
+    void subscriber_callback(const task_interfaces::msg::InputMsg::SharedPtr msg);
     void timer_callback();
     void update_MTX_msr(double theta);
     void measure();

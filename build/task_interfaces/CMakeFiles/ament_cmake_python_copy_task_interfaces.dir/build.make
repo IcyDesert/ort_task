@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/snow/Desktop/enemy_estimator_ws/src/task_interfaces
+CMAKE_SOURCE_DIR = /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/src/task_interfaces
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces
+CMAKE_BINARY_DIR = /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces
 
 # Utility rule file for ament_cmake_python_copy_task_interfaces.
 
@@ -67,7 +67,7 @@ include CMakeFiles/ament_cmake_python_copy_task_interfaces.dir/compiler_depend.m
 include CMakeFiles/ament_cmake_python_copy_task_interfaces.dir/progress.make
 
 CMakeFiles/ament_cmake_python_copy_task_interfaces:
-	/usr/bin/cmake -E copy_directory /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces/rosidl_generator_py/task_interfaces /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces/ament_cmake_python/task_interfaces/task_interfaces
+	/usr/bin/cmake -E copy_directory /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces/rosidl_generator_py/task_interfaces /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces/ament_cmake_python/task_interfaces/task_interfaces
 
 ament_cmake_python_copy_task_interfaces: CMakeFiles/ament_cmake_python_copy_task_interfaces
 ament_cmake_python_copy_task_interfaces: CMakeFiles/ament_cmake_python_copy_task_interfaces.dir/build.make
@@ -82,6 +82,6 @@ CMakeFiles/ament_cmake_python_copy_task_interfaces.dir/clean:
 .PHONY : CMakeFiles/ament_cmake_python_copy_task_interfaces.dir/clean
 
 CMakeFiles/ament_cmake_python_copy_task_interfaces.dir/depend:
-	cd /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/snow/Desktop/enemy_estimator_ws/src/task_interfaces /home/snow/Desktop/enemy_estimator_ws/src/task_interfaces /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces/CMakeFiles/ament_cmake_python_copy_task_interfaces.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/src/task_interfaces /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/src/task_interfaces /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces/CMakeFiles/ament_cmake_python_copy_task_interfaces.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/ament_cmake_python_copy_task_interfaces.dir/depend
 

@@ -2,7 +2,7 @@
 # ament_cmake_core/cmake/uninstall_target/ament_cmake_uninstall_target.cmake.in
 
 function(ament_cmake_uninstall_target_remove_empty_directories path)
-  set(install_space "/home/snow/Desktop/enemy_estimator_ws/install/enemy_estimator_task")
+  set(install_space "/home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/install/enemy_estimator_task")
   if(install_space STREQUAL "")
     message(FATAL_ERROR "The CMAKE_INSTALL_PREFIX variable must not be empty")
   endif()
@@ -29,7 +29,7 @@ function(ament_cmake_uninstall_target_remove_empty_directories path)
 endfunction()
 
 # uninstall files installed using the standard install() function
-set(install_manifest "/home/snow/Desktop/enemy_estimator_ws/build/enemy_estimator_task/install_manifest.txt")
+set(install_manifest "/home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/enemy_estimator_task/install_manifest.txt")
 if(NOT EXISTS "${install_manifest}")
   message(FATAL_ERROR "Cannot find install manifest: ${install_manifest}")
 endif()

@@ -1,8 +1,8 @@
-# Install script for directory: /home/snow/Desktop/enemy_estimator_ws/build/task_interfaces/task_interfaces__py
+# Install script for directory: /home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/build/task_interfaces/task_interfaces__py
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/snow/Desktop/enemy_estimator_ws/install/task_interfaces")
+  set(CMAKE_INSTALL_PREFIX "/home/snow/Documents/critical-HIT/further_task/ort_task/enemy_estimator_ws_step2/install/task_interfaces")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
